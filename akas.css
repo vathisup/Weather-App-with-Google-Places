@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-image: url(images/scenic-mountains-landscape-after-rain-carpathians-ukraine.jpg) ;
+    background-color: aliceblue;
+    background-repeat: no-repeat, repeat;
+    background-size: cover;
+    
+}
+
+/* --------------------background */
+.container-fluid{
+ width: 610px;
+ margin: 2% auto;
+ padding: 10px;
+ padding-bottom: 0;
+
+
+}
+
+
+.inputs {
+    width: 100%;
+
+    text-align: center;
+    justify-content: center;
+    background: white;
+    opacity: 0.6;
+    border-radius: 10px;
+    padding: 5% 3% 5% 10%;
+   
+
+}
+
+.inputs input[type="text"] {
+    height: 3.5rem;
+    width: 20rem;
+    background: #212121;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 10px 10px 10px 5%;
+    border: none;
+    background-color: transparent;
+    border: 2px solid #c2c2c2;
+    border-radius: 10px;
+    
+    float: left;
+
+}
+.inputs input[type="submit"] {
+    height: 3.5rem;
+    width: 6.5rem;
+    background: #0a67ca;
+    font-weight: bold;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    
+}
+
+/* -------------------------------display */
+.display {
+    text-align: center;
+    width: 100%;
+    color: #16a864;
+    border-radius: 10px;
+}
+.wrapper {
+    margin: 0 9rem;
+
+    background-color: white;
+    height: 45vh;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+
+#cityoutput_container{
+    background: #609dff;
+
+}
+.wrapper h2{
+    padding: 5px 0;
+    background: #609dff;
+    color: white;
+    font-family: sans-serif;
+    
+
+  }
+  .wrapper p{
+    margin:20px 50px;
+    margin-right: 20px;
+    text-align: left;
+    color: #04214c;
+    font-size:23px;
+  }
+
+  .wrapper h2 span{
+    font-size: 26px;
+    color: #9beefb;
+  }
+    .wrapper p span{
+    color: #90006e;
+    font-size: 25px;
+  }
+
+
+#citydetail-wrapper {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    background-color: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 5%;
+}
+
+#citydetail-img {
+    width: 25%;
+    float: left;
+    clear: left;
+    padding-top: 2%;
+    padding-left: 2%;
+}
+
+#citydetail{
+    padding-top: 1%;
+    padding-left: 30%;
+    
+}
+
+
+#logo{
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 10%;
+}
+
+
+/* Float four columns side by side */
+.column {
+    float: left;
+    width: 30%;
+    padding: 0 2.5% 2.5% 0;
+    padding-left: 2.5%;
+    
+  }
+  
+  /* Remove extra left and right margins, due to padding in columns */
+  .row {
+    margin: 0 -5px;
+    
+}
+
+  
+  /* Style the counter cards */
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+    background-color: #ffffff;
+    opacity: 0.9;
+    border-radius: 10px;
+    margin-left: 20%;
+  }
+
+.card-image{
+    width: 20%;
+
+}
+
+#description{
+  text-transform: capitalize;
+}
+
+ 
+@media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }

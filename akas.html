@@ -1,0 +1,160 @@
+<!-- Please Install the "Allow CORS: Access-Control-Allow-Origin" extention on your chose browser for this to work properly-->
+<!-- Apparently, I could not get it to work without bypassing the CORS policy. -->
+<!-- Other than that, the application works flawlessly. -->
+<!-- Here is the link: https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKAS Weather Forecast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="akas.css">
+    <script src="apikeys.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initGoogle"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <section class="logo-section">
+            <img src="images/logo.png" id="logo">
+        </section>
+        <section class="main">
+            <section class="inputs">
+                <input type="text" placeholder="Enter any city..." id="cityinput">
+                <input type="submit" value="Submit" id="add">
+            </section>
+            <section id="citydetail-wrapper">
+                <img id="citydetail-img" src="images/example_img.jpeg">
+                <div id="citydetail">
+                    <h2>City: <span id="cityoutput"></span></h2>
+                    <br>
+                    <p><span>Latitude:</span><span id="latitude"><span> </p>
+                    <p><span>Longitude:</span> <span id="longitude"></span></p>
+                    <p><span>Country:</span><span id="country"></span></p>
+                </div>
+            </section>
+        </section>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <img class="card-image" src="images/cloudy.png">
+                <h3>Sky Condition</h3>
+                <br>
+                <hr>
+                <br>
+                <h3 id="description"></h3>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img class="card-image" src="images/hot.png">
+                <h3>Temperature</h3>
+                <br>
+                <hr>
+                <br>
+                <h3 id="temp"></h3>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img class="card-image" src="images/anemometer.png">
+                <h3>Wind Speed</h3>
+                <br>
+                <hr>
+                <br>
+                <h3 id="wind"></h3>
+            </div>
+        </div>
+    </div>
+    <script>
+        var cityName = document.getElementById("cityinput");
+
+        const request = new XMLHttpRequest();
+        const requestTwo = new XMLHttpRequest();
+        const requestThree = new XMLHttpRequest();
+        const requestFour = new XMLHttpRequest();
+
+        var submitButton = document.getElementById("add");
+
+        function initGoogle(){
+            var autocomplete = new google.maps.places.Autocomplete(cityName, {
+                types: ['(cities)'],
+            });
+        }
+
+        submitButton.addEventListener("click", function call(){
+            var apiKey = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName.value + "&appid=" + OPENWEATHERMAP_API_KEY + "&units=metric";
+            var apiKeyTwo = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + cityName.value + "&types=(cities)&key=" + GOOGLE_PLACES_API_KEY;
+            
+            request.open("GET", apiKey);
+            request.send();
+
+            request.onload = () => {
+                var result = request.responseText;
+                var json = JSON.parse(result);   
+
+                var description = document.getElementById("description");
+                description.innerHTML = json.weather[0].description;
+
+                var temperature = document.getElementById("temp");
+                temperature.innerHTML = json["main"].temp + " °C";
+
+                var windSpeed = document.getElementById("wind");
+                windSpeed.innerHTML = json["wind"].speed + " knots";
+
+                var cityName = document.getElementById("cityoutput");
+                cityName.innerHTML = json.name;
+
+                var latitude = document.getElementById("latitude");
+                latitude.innerHTML = " " + json.coord["lat"] + " °";
+
+                var longitude = document.getElementById("longitude");
+                longitude.innerHTML = " " + json.coord["lon"] + " °";
+
+                var country = document.getElementById("country");
+                country.innerHTML = " " + json.sys["country"];
+            }
+
+            requestTwo.open("POST", apiKeyTwo, false);
+
+            requestTwo.onload = () => {
+                var resultThree = requestTwo.responseText;
+                var jsonTwo = JSON.parse(resultThree);
+                key = jsonTwo.predictions[0].place_id;
+            }
+
+            requestTwo.send();
+
+            var apiKeyThree = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + key + "&fields=photo&key=" + GOOGLE_PLACES_API_KEY;
+            requestThree.open("POST", apiKeyThree, false);
+
+            var photoReference;
+
+            requestThree.onload = () => {
+                var resultFour = requestThree.responseText;
+                var jsonThree = JSON.parse(resultFour);
+                photoReference = jsonThree.result.photos[0].photo_reference;
+            }
+
+            requestThree.send();
+
+            var apiKeyFour = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + photoReference + "&key=" + GOOGLE_PLACES_API_KEY;
+            var photoURL;
+            requestFour.open("POST", apiKeyFour, false);
+
+            requestFour.onload = () => {
+                photoURL = requestFour.responseURL;
+                var photoPlacement = document.getElementById("citydetail-img");
+                photoPlacement.src = photoURL;
+            }
+
+            requestFour.send();
+        });
+    </script>
+</body>
+</html>
